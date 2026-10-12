@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Educational Hub & Verification Guide - Veritas AI{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+            <div class="badge-tag mb-3">
+                <i class="fa-solid fa-graduation-cap me-1 text-accent"></i> Misinformation Literacy & Verification
+            </div>
+            <h1 class="h2 fw-extrabold mb-3">
+                Empowering Critical Thinking in the <span class="gradient-text">Digital Age</span>
+            </h1>
+            <p class="text-muted">
+                Artificial Intelligence is a diagnostic assistant, not a definitive arbitrator of truth. Learn to spot deception, analyze emotional manipulation tactics, and cross-reference stories with accredited fact-checking resources.
+            </p>
+        </div>
+    </div>
+
+    <!-- The SIFT Methodology -->
+    <div class="row g-4 mb-5">
+        <div class="col-12 text-center mb-2">
+            <h2 class="h4 fw-bold">The S.I.F.T. Verification Protocol</h2>
+            <p class="text-muted small">A proven four-step framework developed by digital literacy researchers at the University of Washington.</p>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card glass-card h-100 p-4 border-0 text-center">
+                <div class="method-icon-circle mx-auto mb-3 bg-primary-subtle text-primary">
+                    <span class="h4 fw-bold mb-0">S</span>
+                </div>
+                <h3 class="h6 fw-bold">1. Stop</h3>
+                <p class="small text-muted mb-0">
+                    When an article provokes intense anger, panic, or vindication, pause before sharing. High emotional resonance is the primary mechanism of viral disinformation.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card glass-card h-100 p-4 border-0 text-center">
+                <div class="method-icon-circle mx-auto mb-3 bg-info-subtle text-info">
+                    <span class="h4 fw-bold mb-0">I</span>
+                </div>
+                <h3 class="h6 fw-bold">2. Investigate Source</h3>
+                <p class="small text-muted mb-0">
+                    Who published this? Check the domain URL for typosquatting (e.g. '.com.co'). Research the author's credentials outside of their self-published bio.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card glass-card h-100 p-4 border-0 text-center">
+                <div class="method-icon-circle mx-auto mb-3 bg-warning-subtle text-warning">
+                    <span class="h4 fw-bold mb-0">F</span>
+                </div>
+                <h3 class="h6 fw-bold">3. Find Trusted Coverage</h3>
+                <p class="small text-muted mb-0">
+                    Are credible global wire services (AP, Reuters, BBC) reporting this claim? If a catastrophic event occurred, multiple independent outlets will confirm it.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card glass-card h-100 p-4 border-0 text-center">
+                <div class="method-icon-circle mx-auto mb-3 bg-success-subtle text-success">
+                    <span class="h4 fw-bold mb-0">T</span>
+                </div>
+                <h3 class="h6 fw-bold">4. Trace Context</h3>
+                <p class="small text-muted mb-0">
+                    Trace quotes, charts, and video clips to their unedited source. Often, genuine footage is repackaged with fabricated misleading captions years later.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Red Flags Grid -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="card glass-card p-4 p-md-5 border-0">
+                <h3 class="h5 fw-bold mb-4"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> Common Linguistic Hallmarks of Misinformation</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex gap-3">
+                            <i class="fa-solid fa-bullhorn text-warning fa-lg mt-1"></i>
+                            <div>
+                                <h4 class="h6 fw-bold mb-1">Hyperbolic & Urgent Framing</h4>
+                                <p class="small text-muted mb-0">
+                                    Phrases like <em>"Shocking Bombshell"</em>, <em>"They don't want you to know"</em>, or <em>"Share before it is deleted"</em> artificially manufacture panic to hijack rationality.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex gap-3">
+                            <i class="fa-solid fa-user-ninja text-danger fa-lg mt-1"></i>
+                            <div>
+                                <h4 class="h6 fw-bold mb-1">Anonymous & Vague Authorities</h4>
+                                <p class="small text-muted mb-0">
+                                    Claims citing <em>"Scientists are stunned"</em> or <em>"Top doctors reveal"</em> without naming researchers, universities, or peer-reviewed citations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex gap-3">
+                            <i class="fa-solid fa-capsules text-info fa-lg mt-1"></i>
+                            <div>
+                                <h4 class="h6 fw-bold mb-1">Miracle & Panacea Narratives</h4>
+                                <p class="small text-muted mb-0">
+                                    No single kitchen ingredient or herb cures every complex illness overnight. Health misinformation frequently monetizes false hope for dietary supplements.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex gap-3">
+                            <i class="fa-solid fa-magnifying-glass-arrow-right text-success fa-lg mt-1"></i>
+                            <div>
+                                <h4 class="h6 fw-bold mb-1">Lack of Primary Data</h4>
+                                <p class="small text-muted mb-0">
+                                    Real journalism links directly to official court filings, academic papers, legislative bills, or photographic corroboration.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verified Fact-Checking Directory -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h3 class="h5 fw-bold mb-3"><i class="fa-solid fa-shield-halved text-primary me-2"></i> Verified External Fact-Checking Organizations</h3>
+            <p class="text-muted small mb-4">Independent signatories of the International Fact-Checking Network (IFCN) upholding nonpartisanship and methodological transparency.</p>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card glass-card p-3 border-0 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="h6 fw-bold mb-0">Google Fact Check Explorer</h4>
+                            <span class="badge bg-primary-subtle text-primary">Search Aggregator</span>
+                        </div>
+                        <p class="small text-muted mb-3">Indexes verified claims analyzed by over 100 global fact-checking publications worldwide.</p>
+                        <a href="https://toolbox.google.com/factcheck/explorer" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mt-auto">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Search Explorer
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card glass-card p-3 border-0 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="h6 fw-bold mb-0">PolitiFact</h4>
+                            <span class="badge bg-warning-subtle text-warning">Pulitzer Winner</span>
+                        </div>
+                        <p class="small text-muted mb-3">Evaluates public statements by politicians, pundits, and viral memes using the Truth-O-Meter.</p>
+                        <a href="https://www.politifact.com/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mt-auto">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Visit PolitiFact
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card glass-card p-3 border-0 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="h6 fw-bold mb-0">Snopes</h4>
+                            <span class="badge bg-success-subtle text-success">Pioneer Debunker</span>
+                        </div>
+                        <p class="small text-muted mb-3">The internet's definitive reference source for urban legends, folklore, and viral claims since 1994.</p>
+                        <a href="https://www.snopes.com/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mt-auto">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Visit Snopes
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card glass-card p-3 border-0 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h4 class="h6 fw-bold mb-0">Reuters Fact Check</h4>
+                            <span class="badge bg-info-subtle text-info">Wire Service</span>
+                        </div>
+                        <p class="small text-muted mb-3">Global investigative journalists dedicated to examining deceptive online imagery, doctored videos, and rumors.</p>
+                        <a href="https://www.reuters.com/fact-check/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mt-auto">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Visit Reuters Fact Check
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

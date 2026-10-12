@@ -1,0 +1,18 @@
+{
+  "model_name": "Multinomial Naive Bayes",
+  "algorithm": "naive_bayes",
+  "accuracy": 100.0,
+  "precision": 100.0,
+  "recall": 100.0,
+  "f1_score": 100.0,
+  "confusion_matrix": {
+    "true_real": 35,
+    "false_fake": 0,
+    "false_real": 0,
+    "true_fake": 32
+  },
+  "total_samples": 334,
+  "train_samples": 267,
+  "test_samples": 67,
+  "vocabulary_size": 1255
+}

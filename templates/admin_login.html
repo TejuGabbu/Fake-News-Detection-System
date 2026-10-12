@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Portal Sign In - Veritas AI{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card glass-card shadow-lg border-0 p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="brand-icon-wrapper mx-auto mb-3" style="width: 54px; height: 54px;">
+                        <i class="fa-solid fa-user-shield brand-shield fa-lg"></i>
+                    </div>
+                    <h2 class="h4 fw-bold">Admin Portal Access</h2>
+                    <p class="text-muted small">Manage datasets, monitor system telemetry, and retrain machine learning models.</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('admin_login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label small fw-semibold text-muted">Administrator Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text custom-input-group bg-transparent text-muted"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" class="form-control custom-input" id="username" name="username" placeholder="Username" required autofocus>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label small fw-semibold text-muted">Security Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text custom-input-group bg-transparent text-muted"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control custom-input" id="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary w-100 py-2 fw-bold mb-3" id="admin-login-submit">
+                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Authenticate & Enter Dashboard
+                    </button>
+                </form>
+
+                <div class="p-3 rounded-3 bg-body-tertiary border border-secondary-subtle small text-center">
+                    <span class="text-muted"><i class="fa-solid fa-key text-warning me-1"></i> Default Demo Credentials:</span><br>
+                    <code class="text-body fw-bold">admin</code> / <code class="text-body fw-bold">admin123</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

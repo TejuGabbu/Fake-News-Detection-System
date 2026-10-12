@@ -1,0 +1,1080 @@
+/* ==========================================================================
+   VERITAS AI - 3D CYBER-FINTECH DESIGN SYSTEM & STYLESHEET
+   ========================================================================== */
+
+:root {
+    --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-cyber: 'Orbitron', -apple-system, sans-serif;
+
+    /* Cyber Deep Space Theme Palette */
+    --bg-base: #040714;
+    --bg-base-radial: radial-gradient(circle at 50% 20%, #0a112c 0%, #040714 85%);
+    --bg-surface: rgba(10, 16, 36, 0.72);
+    --bg-surface-elevated: rgba(16, 26, 56, 0.85);
+    --bg-card: rgba(11, 20, 44, 0.68);
+    --bg-card-hover: rgba(17, 30, 66, 0.82);
+
+    /* 3D Glassmorphic Lighting & Borders */
+    --border-glass: rgba(255, 255, 255, 0.09);
+    --border-specular: rgba(255, 255, 255, 0.22);
+    --border-focus: rgba(0, 242, 254, 0.6);
+
+    /* Text Tones */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --text-cyan: #00f2fe;
+
+    /* Futuristic Neon Semantic Accents */
+    --neon-cyan: #00f2fe;
+    --neon-emerald: #00ffe0;
+    --neon-crimson: #ff0844;
+    --neon-scarlet: #ff4e50;
+    --neon-amber: #ffb300;
+    --neon-gold: #fbbf24;
+    --neon-indigo: #6366f1;
+    --neon-violet: #a855f7;
+
+    /* Semantic Diagnostic Classes */
+    --color-real: #00ffe0;
+    --color-real-glow: rgba(0, 255, 224, 0.35);
+    --color-real-bg: rgba(0, 255, 224, 0.12);
+    --color-real-border: rgba(0, 255, 224, 0.45);
+
+    --color-fake: #ff0844;
+    --color-fake-glow: rgba(255, 8, 68, 0.4);
+    --color-fake-bg: rgba(255, 8, 68, 0.14);
+    --color-fake-border: rgba(255, 8, 68, 0.5);
+
+    --color-warning: #ffb300;
+    --color-warning-glow: rgba(255, 179, 0, 0.35);
+    --color-warning-bg: rgba(255, 179, 0, 0.12);
+    --color-warning-border: rgba(255, 179, 0, 0.4);
+
+    /* 3D Shadows & Isometric Depth */
+    --shadow-3d-chassis: 0 35px 70px -15px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 242, 254, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    --shadow-3d-card: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.1);
+    --shadow-3d-hover: 0 30px 60px -12px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 242, 254, 0.25);
+    --shadow-push: 0 2px 0 #008899, 0 4px 10px rgba(0, 242, 254, 0.2);
+
+    --radius-card: 18px;
+    --radius-pill: 9999px;
+    --radius-chassis: 22px;
+}
+
+[data-bs-theme="light"] {
+    --bg-base: #f0f4fc;
+    --bg-base-radial: radial-gradient(circle at 50% 15%, #e2eafc 0%, #f0f4fc 85%);
+    --bg-surface: rgba(255, 255, 255, 0.85);
+    --bg-surface-elevated: rgba(244, 247, 254, 0.95);
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-hover: #ffffff;
+    --border-glass: rgba(0, 0, 0, 0.08);
+    --border-specular: rgba(255, 255, 255, 0.8);
+    --border-focus: rgba(99, 102, 241, 0.5);
+
+    --text-main: #0b1120;
+    --text-muted: #475569;
+    --text-dim: #64748b;
+    --text-cyan: #0284c7;
+
+    --shadow-3d-chassis: 0 25px 60px -15px rgba(0, 0, 0, 0.12), 0 0 25px rgba(99, 102, 241, 0.08);
+    --shadow-3d-card: 0 15px 35px -8px rgba(0, 0, 0, 0.08);
+    --shadow-3d-hover: 0 25px 50px -10px rgba(0, 0, 0, 0.15), 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+/* Base Body Styles */
+body.cyber-3d-theme {
+    font-family: var(--font-primary);
+    background-color: var(--bg-base);
+    background-image: var(--bg-base-radial);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    perspective: 1200px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* WebGL Background 3D Canvas */
+.bg-canvas-3d {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+/* Deep Space Ambient Glow Spheres */
+.ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(150px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+}
+
+.glow-1 {
+    width: 700px;
+    height: 700px;
+    top: -200px;
+    left: -150px;
+    background: radial-gradient(circle, #00f2fe 0%, rgba(0, 242, 254, 0) 70%);
+}
+
+.glow-2 {
+    width: 650px;
+    height: 650px;
+    bottom: -150px;
+    right: -100px;
+    background: radial-gradient(circle, #6366f1 0%, rgba(99, 102, 241, 0) 70%);
+}
+
+.glow-3 {
+    width: 500px;
+    height: 500px;
+    top: 40%;
+    left: 60%;
+    background: radial-gradient(circle, #ff0844 0%, rgba(255, 8, 68, 0) 70%);
+    opacity: 0.08;
+}
+
+/* Isometric Cyber Grid Perspective */
+.cyber-grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR & 3D HUD CONTROLS
+   ========================================================================== */
+
+.custom-navbar {
+    background: var(--bg-surface) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border-glass);
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.brand-icon-wrapper {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 18px rgba(0, 242, 254, 0.45);
+    transform-style: preserve-3d;
+}
+
+.brand-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    border: 2px solid var(--neon-cyan);
+    animation: pulse-ring 2.6s infinite;
+    opacity: 0;
+}
+
+.brand-ring {
+    position: absolute;
+    width: 130%;
+    height: 130%;
+    border-radius: inherit;
+    border: 1px dashed rgba(0, 242, 254, 0.4);
+    animation: spin-slow 12s linear infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.brand-title {
+    font-family: var(--font-cyber);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+.brand-accent {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+}
+
+.brand-subtitle {
+    display: block;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-top: 3px;
+}
+
+/* System Telemetry Chip */
+.telemetry-chip {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
+}
+
+.telemetry-beacon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan);
+    animation: beacon-blink 1.8s infinite ease-in-out;
+}
+
+@keyframes beacon-blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.telemetry-label {
+    font-size: 0.72rem;
+    color: var(--text-cyan);
+    letter-spacing: 0.06em;
+}
+
+/* Nav Buttons & Toggles */
+.btn-hud-toggle, .btn-theme-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface-elevated);
+    color: var(--text-main);
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.btn-hud-toggle:hover, .btn-theme-toggle:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 14px rgba(0, 242, 254, 0.3);
+    transform: translateY(-2px);
+}
+
+[data-bs-theme="dark"] .icon-sun { display: inline-block; }
+[data-bs-theme="dark"] .icon-moon { display: none; }
+[data-bs-theme="light"] .icon-sun { display: none; }
+[data-bs-theme="light"] .icon-moon { display: inline-block; }
+
+/* ==========================================================================
+   HERO BANNER & TYPOGRAPHY
+   ========================================================================== */
+
+.hero-title {
+    font-size: 3rem;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+}
+
+@media (max-width: 768px) {
+    .hero-title { font-size: 2.2rem; }
+}
+
+.gradient-cyan-indigo {
+    background: linear-gradient(135deg, #00f2fe 0%, #38bdf8 40%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 242, 254, 0.35);
+}
+
+.badge-tag-3d {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    color: var(--neon-cyan);
+    padding: 7px 18px;
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+}
+
+/* Quick Load Sample Presets Bar */
+.sample-presets-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn-preset-3d {
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 7px 16px;
+    transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+    border: 1px solid var(--border-glass);
+    background: var(--bg-surface-elevated);
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    transform-style: preserve-3d;
+}
+
+.btn-preset-3d:hover {
+    transform: translateY(-3px) translateZ(10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-preset-3d.preset-real:hover {
+    border-color: var(--color-real);
+    color: var(--color-real);
+    box-shadow: 0 0 18px rgba(0, 255, 224, 0.3);
+}
+
+.btn-preset-3d.preset-fake:hover {
+    border-color: var(--color-fake);
+    color: var(--color-fake);
+    box-shadow: 0 0 18px rgba(255, 8, 68, 0.3);
+}
+
+/* ==========================================================================
+   COMPONENT 1: THE 3D ANALYSIS CONSOLE (EXTRUDED TERMINAL CHASSIS)
+   ========================================================================== */
+
+.console-perspective-wrapper {
+    perspective: 1400px;
+    position: relative;
+    z-index: 2;
+}
+
+.analysis-console-3d {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid var(--border-specular) !important;
+    border-radius: var(--radius-chassis);
+    box-shadow: var(--shadow-3d-chassis);
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+/* Specular Light Reflection Rim */
+.analysis-console-3d::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 242, 254, 0.8) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Console Header Chassis */
+.console-header-chassis {
+    background: rgba(14, 24, 52, 0.7);
+    border-bottom: 1px solid var(--border-glass);
+    padding: 16px 24px;
+}
+
+.terminal-badge {
+    font-family: var(--font-cyber);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.terminal-status-light {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    display: inline-block;
+    animation: beacon-blink 2s infinite;
+}
+
+/* Dual Mode Segmented Controls */
+.console-mode-selector {
+    display: inline-flex;
+    background: rgba(6, 12, 28, 0.7);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+}
+
+.mode-tab-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    cursor: pointer;
+}
+
+.mode-tab-btn.active {
+    background: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 242, 254, 0.35);
+}
+
+/* 3D Physical Z-Axis Input Fields */
+.input-3d-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.input-3d {
+    background-color: var(--bg-surface-elevated) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-main) !important;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+    transform: translateZ(0);
+}
+
+/* Z-AXIS DEPRESSION INTERACTION (Depresses slightly on focus/type/paste) */
+.input-3d:focus,
+.input-3d.depressed,
+.input-3d-wrapper:focus-within .input-3d {
+    transform: translateZ(-8px) scale(0.994);
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.7), 0 0 18px rgba(0, 242, 254, 0.25) !important;
+    border-color: var(--neon-cyan) !important;
+    outline: none !important;
+}
+
+.textarea-3d {
+    resize: vertical;
+    min-height: 160px;
+    line-height: 1.7;
+    font-family: var(--font-primary);
+}
+
+.hud-counter-pill {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-cyan);
+}
+
+/* Tactile Physical 3D Push-Down Buttons */
+.btn-3d-push {
+    position: relative;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.12s ease;
+    transform-style: preserve-3d;
+    user-select: none;
+}
+
+.btn-3d-primary {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #6366f1 100%);
+    color: #fff;
+    padding: 13px 28px;
+    font-family: var(--font-cyber);
+    font-size: 0.95rem;
+    box-shadow: 0 6px 0 #007799, 0 14px 28px rgba(0, 242, 254, 0.45);
+}
+
+.btn-3d-primary:hover {
+    box-shadow: 0 7px 0 #007799, 0 16px 32px rgba(0, 242, 254, 0.6);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* PHYSICAL PUSH-DOWN STATE */
+.btn-3d-primary:active,
+.btn-3d-primary.is-pressed {
+    transform: translateY(5px) translateZ(-6px);
+    box-shadow: 0 1px 0 #007799, 0 4px 12px rgba(0, 242, 254, 0.35);
+}
+
+.btn-3d-secondary {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5), 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-3d-secondary:hover {
+    color: var(--text-main);
+    border-color: var(--border-specular);
+    transform: translateY(-2px);
+}
+
+.btn-3d-secondary:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* URL Input Bar with Extraction Button */
+.url-input-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-extract-url {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #fff;
+    font-size: 0.88rem;
+    padding: 13px 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 0 #3730a3, 0 8px 20px rgba(99, 102, 241, 0.35);
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.btn-extract-url:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #3730a3, 0 10px 24px rgba(99, 102, 241, 0.45);
+    color: #fff;
+}
+
+.btn-extract-url:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #3730a3;
+}
+
+/* ==========================================================================
+   COMPONENT 2: 3D PROCESSING ANIMATION (HOLOGRAPHIC SCANNING STAGE)
+   ========================================================================== */
+
+.scanning-stage-card {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 242, 254, 0.3) !important;
+    border-radius: var(--radius-chassis);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Container for Three.js 3D Scanning Canvas */
+.scanner-3d-stage {
+    width: 100%;
+    height: 340px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: radial-gradient(circle at center, rgba(16, 28, 64, 0.7) 0%, rgba(4, 7, 20, 0.95) 100%);
+}
+
+.scanner-canvas-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.scanner-hud-telemetry {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    right: 20px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.hud-step-text {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+.custom-cyber-progress {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.cyber-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00f2fe 0%, #6366f1 50%, #00ffe0 100%);
+    box-shadow: 0 0 14px var(--neon-cyan);
+    transition: width 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==========================================================================
+   COMPONENT 3: THE TRUTH DASHBOARD (RESULTS)
+   ========================================================================== */
+
+/* 3.1 Verdict Banner */
+.verdict-card-3d {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(24px);
+    border-radius: var(--radius-chassis);
+    border: 1px solid var(--border-glass) !important;
+    box-shadow: var(--shadow-3d-chassis);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.verdict-card-3d.verdict-real {
+    border-color: rgba(0, 255, 224, 0.45) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 255, 224, 0.25);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(0, 255, 224, 0.08) 100%) !important;
+}
+
+.verdict-card-3d.verdict-fake {
+    border-color: rgba(255, 8, 68, 0.5) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 8, 68, 0.25);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255, 8, 68, 0.1) 100%) !important;
+}
+
+.verdict-badge-3d {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-cyber);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+}
+
+.verdict-badge-3d.badge-real {
+    background: var(--color-real-bg);
+    color: var(--color-real);
+    border: 1px solid var(--color-real-border);
+    box-shadow: 0 0 16px rgba(0, 255, 224, 0.35);
+}
+
+.verdict-badge-3d.badge-fake {
+    background: var(--color-fake-bg);
+    color: var(--color-fake);
+    border: 1px solid var(--color-fake-border);
+    box-shadow: 0 0 16px rgba(255, 8, 68, 0.35);
+}
+
+.verdict-headline-3d {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* 3.2 3D Circular Torus Gauge / Ring Chart */
+.truth-gauge-3d-box {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.truth-gauge-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.truth-gauge-center-data {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.truth-score-number {
+    font-family: var(--font-cyber);
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 242, 254, 0.7);
+}
+
+.truth-score-label {
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Strict Disclaimer Box with 3D Border */
+.strict-disclaimer-box-3d {
+    background: var(--color-warning-bg);
+    border: 1px solid var(--color-warning-border);
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(255, 179, 0, 0.1);
+}
+
+/* ==========================================================================
+   COMPONENT 3.2: 3D METRICS CARDS (PARALLAX TILT TILES)
+   ========================================================================== */
+
+.parallax-3d-card {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-3d-card);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+.parallax-3d-card:hover {
+    box-shadow: var(--shadow-3d-hover);
+    border-color: var(--border-specular) !important;
+}
+
+/* Specular Glare Overlay */
+.card-specular-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle 280px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.12) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.2s ease;
+}
+
+.card-inner-3d {
+    position: relative;
+    z-index: 3;
+    transform: translateZ(24px);
+}
+
+.metric-label-mono {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.metric-value-cyber {
+    font-family: var(--font-cyber);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.progress-3d {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.progress-3d-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.8s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==========================================================================
+   COMPONENT 3.3: 3D SOURCE PROPAGATION MAP (NODE GRAPH)
+   ========================================================================== */
+
+.propagation-map-card {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--radius-chassis);
+    box-shadow: var(--shadow-3d-chassis);
+    position: relative;
+    overflow: hidden;
+}
+
+.propagation-3d-stage {
+    width: 100%;
+    height: 440px;
+    position: relative;
+    background: radial-gradient(circle at center, #09112a 0%, #030612 100%);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.propagation-canvas-container {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+.propagation-canvas-container:active {
+    cursor: grabbing;
+}
+
+/* Floating 3D Node Tooltip */
+.propagation-node-tooltip {
+    position: absolute;
+    display: none;
+    background: rgba(8, 15, 36, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 242, 254, 0.3);
+    z-index: 20;
+    pointer-events: none;
+    min-width: 220px;
+    transform: translate(-50%, -120%);
+    transition: opacity 0.15s ease;
+}
+
+.tooltip-title {
+    font-family: var(--font-cyber);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.tooltip-stat-row {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3px;
+}
+
+/* Propagation Toolbar */
+.propagation-hud-toolbar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+}
+
+.btn-hud-control {
+    background: rgba(10, 20, 48, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-hud-control:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+}
+
+.propagation-legend-strip {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+}
+
+.legend-node-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* ==========================================================================
+   COMPONENT 3.4: EXPLAINABLE AI (XAI) 3D TEXT INSPECTION CANVAS
+   ========================================================================== */
+
+.xai-text-canvas-3d {
+    background: rgba(7, 13, 30, 0.85);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+    font-size: 1.02rem;
+    line-height: 1.85;
+    max-height: 380px;
+    overflow-y: auto;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.xai-token {
+    padding: 3px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-block;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    text-decoration: none;
+    transform: translateZ(0);
+}
+
+.xai-token:hover {
+    transform: scale(1.1) translateZ(8px);
+    z-index: 5;
+}
+
+.xai-token-fake {
+    background-color: var(--color-fake-bg);
+    color: var(--color-fake);
+    border-bottom: 2px solid var(--color-fake);
+}
+
+.xai-token-fake:hover {
+    background-color: rgba(255, 8, 68, 0.28);
+    box-shadow: 0 0 16px rgba(255, 8, 68, 0.5);
+}
+
+.xai-token-real {
+    background-color: var(--color-real-bg);
+    color: var(--color-real);
+    border-bottom: 2px solid var(--color-real);
+}
+
+.xai-token-real:hover {
+    background-color: rgba(0, 255, 224, 0.28);
+    box-shadow: 0 0 16px rgba(0, 255, 224, 0.5);
+}
+
+.influence-card-3d {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+}
+
+.token-impact-item-3d {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: rgba(5, 10, 24, 0.6);
+    border: 1px solid var(--border-glass);
+    font-size: 0.85rem;
+    transition: transform 0.15s ease;
+}
+
+.token-impact-item-3d:hover {
+    transform: translateX(4px);
+    border-color: var(--border-specular);
+}
+
+/* ==========================================================================
+   EXTERNAL FACT-CHECKING TILES & FEEDBACK
+   ========================================================================== */
+
+.factcheck-card-3d {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.factcheck-card-3d:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 8px 24px rgba(0, 242, 254, 0.2);
+}
+
+.btn-feedback-3d {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+.btn-feedback-3d:hover {
+    transform: translateY(-2px);
+}
+
+.btn-feedback-3d:active {
+    transform: translateY(2px);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-cyan);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .scanner-3d-stage { height: 280px; }
+    .propagation-3d-stage { height: 350px; }
+}

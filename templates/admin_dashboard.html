@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Veritas AI Misinformation Radar{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-lg-5 pb-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 pt-2">
+        <div>
+            <div class="badge bg-primary-subtle text-primary border border-primary-subtle mb-1">
+                <i class="fa-solid fa-lock-open me-1"></i> Authenticated Session &bull; Administrator
+            </div>
+            <h1 class="h3 fw-bold mb-0">System Telemetry & ML Governance Studio</h1>
+            <p class="text-muted small mb-0">Monitor real-time scans, curate training datasets, and re-benchmark machine learning models.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" id="btn-refresh-stats" onclick="location.reload();">
+                <i class="fa-solid fa-arrows-rotate me-1"></i> Refresh Data
+            </button>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-danger">
+                <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Log Out
+            </a>
+        </div>
+    </div>
+
+    <!-- Stat KPI Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card glass-card kpi-card shadow-sm border-0 p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small text-uppercase fw-semibold">Total Scans Executed</span>
+                        <h2 class="h3 fw-bold mt-1 mb-0">{{ total_scans }}</h2>
+                    </div>
+                    <div class="kpi-icon-wrapper bg-primary-subtle text-primary">
+                        <i class="fa-solid fa-chart-line fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-2 text-muted small">
+                    <i class="fa-solid fa-arrow-trend-up text-success me-1"></i> Continuous active logging
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card glass-card kpi-card shadow-sm border-0 p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small text-uppercase fw-semibold">Fake Ratio Detected</span>
+                        <h2 class="h3 fw-bold mt-1 mb-0 text-danger">{{ fake_pct }}%</h2>
+                    </div>
+                    <div class="kpi-icon-wrapper bg-danger-subtle text-danger">
+                        <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-2 text-muted small">
+                    <span>{{ fake_count }} flagged / {{ total_scans }} total</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card glass-card kpi-card shadow-sm border-0 p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small text-uppercase fw-semibold">Active Model Algorithm</span>
+                        <h2 class="h5 fw-bold mt-1 mb-0 text-primary">{{ active_model_name }}</h2>
+                    </div>
+                    <div class="kpi-icon-wrapper bg-info-subtle text-info">
+                        <i class="fa-solid fa-microchip fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-2 text-muted small">
+                    <span class="badge bg-success-subtle text-success">Acc: {{ model_accuracy }}%</span> &bull; <span>F1: {{ model_f1 }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card glass-card kpi-card shadow-sm border-0 p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small text-uppercase fw-semibold">Dataset Corpus Size</span>
+                        <h2 class="h3 fw-bold mt-1 mb-0">{{ dataset_count }}</h2>
+                    </div>
+                    <div class="kpi-icon-wrapper bg-success-subtle text-success">
+                        <i class="fa-solid fa-database fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-2 text-muted small">
+                    <span>Verified real & fake news articles</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Retraining Row -->
+    <div class="row g-4 mb-4">
+        <!-- Chart: Class Distribution -->
+        <div class="col-lg-4">
+            <div class="card glass-card shadow-sm border-0 p-4 h-100">
+                <h3 class="h6 fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-primary"></i> Scan Verdict Distribution
+                </h3>
+                <div class="chart-wrapper position-relative" style="height: 240px;">
+                    <canvas id="chart-verdict-distribution"></canvas>
+                </div>
+                <div class="d-flex justify-content-center gap-4 mt-3 small">
+                    <span><i class="fa-solid fa-circle text-success me-1"></i> Real: {{ real_count }}</span>
+                    <span><i class="fa-solid fa-circle text-danger me-1"></i> Fake: {{ fake_count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Retraining Studio -->
+        <div class="col-lg-8">
+            <div class="card glass-card shadow-sm border-0 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <h3 class="h6 fw-bold mb-0"><i class="fa-solid fa-gears text-primary me-2"></i> Machine Learning Retraining Studio</h3>
+                        <small class="text-muted">Select an algorithm to evaluate and retrain on current corpus.</small>
+                    </div>
+                    <span class="badge bg-secondary-subtle text-body border border-secondary-subtle">
+                        <i class="fa-solid fa-clock-rotate-left me-1"></i> Ready
+                    </span>
+                </div>
+
+                <form id="retrain-form" class="row g-3 align-items-end mb-4">
+                    <div class="col-md-7">
+                        <label for="algorithm-select" class="form-label small fw-semibold text-muted">Classifier Algorithm</label>
+                        <select class="form-select custom-select" id="algorithm-select">
+                            <option value="logistic_regression" selected>Logistic Regression (L2 Regularized - Optimal XAI Attribution)</option>
+                            <option value="naive_bayes">Multinomial Naive Bayes (Fast Probabilistic)</option>
+                            <option value="passive_aggressive">Passive-Aggressive Classifier (Online Linear SVM)</option>
+                            <option value="random_forest">Random Forest Classifier (Ensemble 120 Trees)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <button type="submit" class="btn btn-gradient-primary w-100 py-2 fw-bold" id="btn-retrain">
+                            <span class="retrain-btn-text">
+                                <i class="fa-solid fa-rotate me-1"></i> Retrain & Benchmark
+                            </span>
+                            <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                            <span class="retrain-loading-text d-none">Retraining...</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Retraining Metrics Showcase -->
+                <div id="retrain-results-box" class="p-3 rounded-3 bg-body-tertiary border">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-semibold small text-muted text-uppercase">Benchmark Evaluation Metrics:</span>
+                        <span class="badge bg-primary" id="retrained-model-badge">{{ active_model_name }}</span>
+                    </div>
+
+                    <div class="row g-2 text-center">
+                        <div class="col-3">
+                            <div class="p-2 rounded bg-body">
+                                <span class="d-block text-muted small">Accuracy</span>
+                                <span class="h5 fw-bold mb-0 text-success" id="metric-acc">{{ model_accuracy }}%</span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2 rounded bg-body">
+                                <span class="d-block text-muted small">Precision</span>
+                                <span class="h5 fw-bold mb-0 text-primary" id="metric-prec">{{ model_precision }}%</span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2 rounded bg-body">
+                                <span class="d-block text-muted small">Recall</span>
+                                <span class="h5 fw-bold mb-0 text-info" id="metric-rec">{{ model_recall }}%</span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-2 rounded bg-body">
+                                <span class="d-block text-muted small">F1-Score</span>
+                                <span class="h5 fw-bold mb-0 text-warning" id="metric-f1">{{ model_f1 }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dataset Management Tab & Activity Logs -->
+    <div class="row g-4">
+        <!-- Dataset Articles -->
+        <div class="col-lg-6">
+            <div class="card glass-card shadow-sm border-0 p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <h3 class="h6 fw-bold mb-0"><i class="fa-solid fa-folder-open text-primary me-2"></i> Training Dataset Repository</h3>
+                        <small class="text-muted">{{ dataset_count }} labeled articles available for training</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#addArticleModal">
+                        <i class="fa-solid fa-plus me-1"></i> Add Article
+                    </button>
+                </div>
+
+                <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                    <table class="table table-hover align-middle custom-table">
+                        <thead class="sticky-top bg-body-tertiary">
+                            <tr>
+                                <th style="width: 50%;">Article Title</th>
+                                <th>Class</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for article in sample_articles %}
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold text-truncate" style="max-width: 260px;" title="{{ article.title }}">{{ article.title }}</div>
+                                    <small class="text-muted text-truncate d-block" style="max-width: 260px;">{{ article.content[:70] }}...</small>
+                                </td>
+                                <td>
+                                    {% if article.label == 1 %}
+                                        <span class="badge bg-danger-subtle text-danger">Fake</span>
+                                    {% else %}
+                                        <span class="badge bg-success-subtle text-success">Real</span>
+                                    {% endif %}
+                                </td>
+                                <td><small class="text-muted">{{ article.source }}</small></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">No dataset articles found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Prediction Activity Logs -->
+        <div class="col-lg-6">
+            <div class="card glass-card shadow-sm border-0 p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <h3 class="h6 fw-bold mb-0"><i class="fa-solid fa-list-check text-primary me-2"></i> User Verification Activity Feed</h3>
+                        <small class="text-muted">Live audit trail of user submissions</small>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary">{{ recent_scans|length }} Logged</span>
+                </div>
+
+                <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+                    <table class="table table-hover align-middle custom-table">
+                        <thead class="sticky-top bg-body-tertiary">
+                            <tr>
+                                <th>Headline / Text</th>
+                                <th>Prediction</th>
+                                <th>Confidence</th>
+                                <th>Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for scan in recent_scans %}
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold text-truncate" style="max-width: 200px;" title="{{ scan.title }}">{{ scan.title or "Untitled Scan" }}</div>
+                                    <small class="text-muted">{{ scan.created_at.strftime("%b %d, %H:%M") }}</small>
+                                </td>
+                                <td>
+                                    {% if scan.prediction_code == 1 %}
+                                        <span class="badge bg-danger-subtle text-danger">Fake</span>
+                                    {% else %}
+                                        <span class="badge bg-success-subtle text-success">Real</span>
+                                    {% endif %}
+                                </td>
+                                <td><span class="fw-bold">{{ scan.confidence }}%</span></td>
+                                <td>
+                                    {% if scan.user_feedback == 'agreed' %}
+                                        <span class="text-success small"><i class="fa-solid fa-thumbs-up"></i> Agree</span>
+                                    {% elif scan.user_feedback == 'disputed' %}
+                                        <span class="text-danger small"><i class="fa-solid fa-thumbs-down"></i> Disputed</span>
+                                    {% else %}
+                                        <span class="text-muted small">&mdash;</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No scans recorded yet. Try scanning news in the Analyzer!</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Add New Labeled Article -->
+<div class="modal fade" id="addArticleModal" tabindex="-1" aria-labelledby="addArticleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="addArticleModalLabel">Add Labeled News to Dataset</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add-article-form" action="{{ url_for('admin_add_article') }}" method="POST">
+                <div class="modal-body py-3">
+                    <div class="mb-3">
+                        <label for="modal-title" class="form-label small fw-semibold text-muted">Article Title / Headline</label>
+                        <input type="text" class="form-control custom-input" id="modal-title" name="title" required placeholder="Headline">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-content" class="form-label small fw-semibold text-muted">Article Text</label>
+                        <textarea class="form-control custom-input" id="modal-content" name="content" rows="5" required placeholder="Full text or excerpt..."></textarea>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label for="modal-label" class="form-label small fw-semibold text-muted">Classification Label</label>
+                            <select class="form-select custom-select" id="modal-label" name="label">
+                                <option value="0">Real News (0)</option>
+                                <option value="1">Potentially Fake News (1)</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="modal-source" class="form-label small fw-semibold text-muted">Source Attribution</label>
+                            <input type="text" class="form-control custom-input" id="modal-source" name="source" placeholder="e.g. Associated Press" value="Admin Verified">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-primary btn-sm px-3 fw-bold">Save Article</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pass initial counts to admin.js
+    window.ADMIN_DATA = {
+        realCount: {{ real_count }},
+        fakeCount: {{ fake_count }},
+        activeModel: "{{ active_model_name }}"
+    };
+</script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

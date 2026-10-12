@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Veritas AI | Fake News Detection System{% endblock %}</title>
+    <meta name="description" content="AI-powered fake news detection system using NLP, machine learning classifiers, and transparent Explainable AI (XAI) token attribution to combat online misinformation.">
+    
+    <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono & Orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome Icons 6.5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom 3D & FinTech Cyber Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="cyber-3d-theme">
+    <!-- WebGL 3D Interactive Background Canvas -->
+    <canvas id="bg-canvas-3d" class="bg-canvas-3d" aria-hidden="true"></canvas>
+
+    <!-- Deep Space Atmospheric Lighting Layers -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+    <div class="cyber-grid-overlay"></div>
+
+    <!-- Navigation Bar with 3D FinTech Glassmorphism -->
+    <nav class="navbar navbar-expand-lg sticky-top custom-navbar" id="main-cyber-nav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}" id="nav-brand">
+                <div class="brand-icon-wrapper">
+                    <i class="fa-solid fa-shield-halved brand-shield"></i>
+                    <span class="brand-pulse"></span>
+                    <span class="brand-ring"></span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">VERITAS<span class="brand-accent">.3D</span></span>
+                    <span class="brand-subtitle">Misinformation Intelligence</span>
+                </div>
+            </a>
+
+            <!-- System Telemetry Pill -->
+            <div class="d-none d-md-flex align-items-center gap-2 px-3 py-1 rounded-pill telemetry-chip ms-3">
+                <span class="telemetry-beacon"></span>
+                <span class="telemetry-label font-mono small">CORE: ONLINE // 3D NEURAL ENGINE</span>
+            </div>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars text-body"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}" id="nav-analyzer">
+                            <i class="fa-solid fa-cube me-1 text-accent"></i> 3D Analyzer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 {% if request.endpoint == 'fact_check' %}active{% endif %}" href="{{ url_for('fact_check') }}" id="nav-factcheck">
+                            <i class="fa-solid fa-graduation-cap me-1"></i> Educational Hub
+                        </a>
+                    </li>
+                    
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn-admin-nav px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="nav-admin-dropdown">
+                            <i class="fa-solid fa-user-shield me-1"></i> Admin Studio
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}"><i class="fa-solid fa-gauge-high me-2 text-primary"></i> Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ url_for('admin_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Log Out</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-custom px-3 ms-lg-2" href="{{ url_for('admin_login') }}" id="nav-login">
+                            <i class="fa-solid fa-lock me-1"></i> Admin Login
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- Sound FX Toggle Button -->
+                    <li class="nav-item ms-lg-1">
+                        <button class="btn btn-sm btn-hud-toggle" id="sound-toggle-btn" title="Toggle Cyber Audio FX" aria-label="Toggle Cyber Sound Effects">
+                            <i class="fa-solid fa-volume-high icon-sound-on"></i>
+                            <i class="fa-solid fa-volume-xmark icon-sound-off d-none"></i>
+                        </button>
+                    </li>
+
+                    <!-- Theme Switcher -->
+                    <li class="nav-item ms-lg-1">
+                        <button class="btn btn-sm btn-theme-toggle" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+                            <i class="fa-solid fa-sun icon-sun"></i>
+                            <i class="fa-solid fa-moon icon-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content py-4 position-relative">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show custom-alert" role="alert">
+                            <i class="fa-solid {% if category == 'success' %}fa-circle-check text-success{% else %}fa-circle-exclamation text-danger{% endif %} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Futuristic Cyber Footer -->
+    <footer class="custom-footer mt-auto py-4 border-top">
+        <div class="container text-center">
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 mb-3">
+                <span class="footer-link"><i class="fa-solid fa-microchip text-accent me-1"></i> Scikit-Learn TF-IDF</span>
+                <span class="footer-link"><i class="fa-solid fa-brain text-accent me-1"></i> Explainable AI (XAI)</span>
+                <span class="footer-link"><i class="fa-solid fa-vr-cardboard text-accent me-1"></i> WebGL 3D Visualization</span>
+                <span class="footer-link"><i class="fa-solid fa-network-wired text-accent me-1"></i> 3D Diffusion Topology</span>
+                <span class="footer-link"><i class="fa-solid fa-shield-check text-accent me-1"></i> IFCN Cross-Referenced</span>
+            </div>
+            <p class="footer-disclaimer mb-2 text-muted small">
+                <strong>Strict Academic & Automated Assessment Notice:</strong> This machine learning platform calculates linguistic and lexical probability patterns. Automated classifications must not be treated as definitive legal proof of truth. Always consult primary documentation and verified independent fact-checkers.
+            </p>
+            <p class="mb-0 text-muted small">
+                &copy; 2026 Veritas AI Misinformation Defense System. Built for academic research & online verification.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js for Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Three.js (WebGL 3D Engine) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Three.js OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Veritas 3D Core Components -->
+    <script src="{{ url_for('static', filename='js/three_components.js') }}"></script>
+    <!-- Custom Application Script -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    container_name: veritas-ai-app
+    ports:
+      - "5000:5000"
+    environment:
+      - SECRET_KEY=veritas-secret-key-super-secure-misinfo-defense-2026
+      - PORT=5000
+    volumes:
+      - ./instance:/app/instance
+    restart: unless-stopped
