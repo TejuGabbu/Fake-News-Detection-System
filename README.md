@@ -79,3 +79,25 @@ http://127.0.0.1:5000
 python -m unittest tests/test_pipeline.py
 python -m unittest tests/test_routes.py
 ```
+
+---
+
+## Cloud Deployment (Render)
+
+The project includes pre-configured [render.yaml](render.yaml) and [Procfile](Procfile) ready for instant free deployment on [Render](https://render.com).
+
+### 1-Click / Blueprint Deployment:
+1. Push this repository to your GitHub account:
+   ```bash
+   git remote add origin https://github.com/<YOUR_USERNAME>/<REPO_NAME>.git
+   git push -u origin main
+   ```
+2. Log in to [Render](https://dashboard.render.com).
+3. Click **New +** > **Web Service** (or **Blueprint**).
+4. Connect your GitHub repository.
+5. Set:
+   - **Environment**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT`
+6. Click **Deploy Web Service**.
+
